@@ -31,7 +31,7 @@ public class Tile : MonoBehaviour
             neighbours.Add(GetBottomNeighbour());
         }
 
-        if (neighbours.Count == 0) {
+        if (neighbours.Count == 0 && map.LoggingEnabled) {
             Debug.LogWarning(string.Concat("No neighbours exist for tile", X, "-", Y));
         }
 
@@ -54,7 +54,7 @@ public class Tile : MonoBehaviour
             corners.Add(GetBLCorner());
         }
 
-        if (corners.Count == 0) {
+        if (corners.Count == 0 && map.LoggingEnabled) {
             Debug.LogWarning(string.Concat("No corners exist for tile", X, "-", Y));
         }
 
@@ -66,8 +66,8 @@ public class Tile : MonoBehaviour
         tiles.AddRange(GetAllNeighbours());
         tiles.AddRange(GetAllCorners());
 
-        if (tiles.Count == 0) {
-            Debug.LogWarning(string.Concat("No expansion possible for tile", X, "-", Y));
+        if (tiles.Count == 0 && map.LoggingEnabled) {
+            if (map.LoggingEnabled) Debug.LogWarning(string.Concat("No expansion possible for tile", X, "-", Y));
         }
 
         return tiles;
@@ -84,7 +84,7 @@ public class Tile : MonoBehaviour
             return map.GetTileByCoordinates(X + 1, Y);
         }
 
-        Debug.LogWarning(string.Concat("Right neighbour for tile-", X, "-", Y, " does not exist."));
+        if (map.LoggingEnabled) Debug.LogWarning(string.Concat("Right neighbour for tile-", X, "-", Y, " does not exist."));
         return null;
     }
 
@@ -93,7 +93,7 @@ public class Tile : MonoBehaviour
             return map.GetTileByCoordinates(X - 1, Y);
         }
 
-        Debug.LogWarning(string.Concat("Left neighbour for tile-", X, "-", Y, " does not exist."));
+        if (map.LoggingEnabled) Debug.LogWarning(string.Concat("Left neighbour for tile-", X, "-", Y, " does not exist."));
         return null;
     }
 
@@ -102,7 +102,7 @@ public class Tile : MonoBehaviour
             return map.GetTileByCoordinates(X, Y + 1);
         }
 
-        Debug.LogWarning(string.Concat("Top neighbour for tile-", X, "-", Y, " does not exist."));
+        if (map.LoggingEnabled) Debug.LogWarning(string.Concat("Top neighbour for tile-", X, "-", Y, " does not exist."));
         return null;
     }
 
@@ -111,7 +111,7 @@ public class Tile : MonoBehaviour
             return map.GetTileByCoordinates(X, Y - 1);
         }
 
-        Debug.LogWarning(string.Concat("Bottom neighbour for tile-", X, "-", Y, " does not exist."));
+        if (map.LoggingEnabled) Debug.LogWarning(string.Concat("Bottom neighbour for tile-", X, "-", Y, " does not exist."));
         return null;
     }
 
@@ -120,7 +120,7 @@ public class Tile : MonoBehaviour
             return map.GetTileByCoordinates(X + 1, Y + 1);
         }
 
-        Debug.LogWarning(string.Concat("TR corner for tile-", X, "-", Y, " does not exist."));
+        if (map.LoggingEnabled) Debug.LogWarning(string.Concat("TR corner for tile-", X, "-", Y, " does not exist."));
         return null;
     }
 
@@ -129,7 +129,7 @@ public class Tile : MonoBehaviour
             return map.GetTileByCoordinates(X - 1, Y + 1);
         }
 
-        Debug.LogWarning(string.Concat("TL corner for tile-", X, "-", Y, " does not exist."));
+        if (map.LoggingEnabled) Debug.LogWarning(string.Concat("TL corner for tile-", X, "-", Y, " does not exist."));
         return null;
     }
 
@@ -138,7 +138,7 @@ public class Tile : MonoBehaviour
             return map.GetTileByCoordinates(X + 1, Y - 1);
         }
 
-        Debug.LogWarning(string.Concat("BR corner for tile-", X, "-", Y, " does not exist."));
+        if (map.LoggingEnabled) Debug.LogWarning(string.Concat("BR corner for tile-", X, "-", Y, " does not exist."));
         return null;
     }
 
@@ -147,7 +147,7 @@ public class Tile : MonoBehaviour
             return map.GetTileByCoordinates(X - 1, Y - 1);
         }
 
-        Debug.LogWarning(string.Concat("BL corner for tile-", X, "-", Y, " does not exist."));
+        if (map.LoggingEnabled) Debug.LogWarning(string.Concat("BL corner for tile-", X, "-", Y, " does not exist."));
         return null;
     }
 }

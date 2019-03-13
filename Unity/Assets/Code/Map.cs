@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class Map : MonoBehaviour
 {
-    List<GameObject> tiles;
+    List<GameObject> tiles = new List<GameObject>();
+    Dictionary<GameObject, Tile> tileCache = new Dictionary<GameObject, Tile>();
     public GameObject PrefabTile;
     public Sprite SpriteEmpty;
     public Sprite SpriteStart;
@@ -20,6 +21,7 @@ public class Map : MonoBehaviour
     public int AmountApples;
     bool dirty = false;
     public float ChanceOfFatRooms;
+    public bool LoggingEnabled = false;
 
     void Start() {
         GenerateMap();
@@ -31,8 +33,6 @@ public class Map : MonoBehaviour
 
     void GenerateMap ()
     {
-        tiles = new List<GameObject>();
-
         // set up empty map
         for (int x = 0; x < Width; x++) {
             for (int y = 0; y < Height; y++) {
@@ -196,10 +196,19 @@ public class Map : MonoBehaviour
     {
         Tile tR = null;
         foreach (GameObject go in tiles) {
-            Tile t = go.GetComponent<Tile>();
-            if (t.X == x && t.Y == y) {
-                tR = t;
+
+            if (!tileCache.ContainsKey(go)) {
+                Tile t = go.GetComponent<Tile>();
+                tileCache[go] = t;
+                print("a");
             }
+
+            print("b");
+            if (tileCache[go].X == x && tileCache[go].Y == y) {
+                tR = tileCache[go];
+                print("c");
+            }
+
         }
         return tR;
     }
