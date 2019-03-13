@@ -18,6 +18,7 @@ public class Map : MonoBehaviour
     public float GridY;
     public int AmountStarts;
     public int AmountApples;
+    bool dirty = false;
 
     void Start()
     {
@@ -140,8 +141,6 @@ public class Map : MonoBehaviour
             t.Type = Tile.T.floor;
         }
 
-
-
         // mark everything else as walls
         foreach (GameObject go in tilesToFill) {
             Tile t = go.GetComponent<Tile>();
@@ -164,6 +163,8 @@ public class Map : MonoBehaviour
         foreach (Tile t in tilesToBeRemoved) {
             t.Type = Tile.T.empty;
         }
+
+        dirty = true;
     }
 
     public Tile GetTileByCoordinates(int x, int y)
@@ -183,7 +184,7 @@ public class Map : MonoBehaviour
     }
 
     private void Update () {
-        PaintAndName();
+        if (dirty) PaintAndName();
     }
 
     private void PaintAndName () {
@@ -197,15 +198,21 @@ public class Map : MonoBehaviour
             }
             else if (t.Type == Tile.T.start) {
                 r.sprite = SpriteStart;
-            } else if (t.Type == Tile.T.apple) {
+            } 
+            else if (t.Type == Tile.T.apple) {
                 r.sprite = SpriteApple;
-            } else if (t.Type == Tile.T.wall) {
+            } 
+            else if (t.Type == Tile.T.wall) {
                 r.sprite = SpriteWall;
-            } else if (t.Type == Tile.T.floor) {
+            } 
+            else if (t.Type == Tile.T.floor) {
                 r.sprite = SpriteFloor;
-            } else {
+            } 
+            else {
                 Debug.LogError(string.Concat("Tile-", t.X, "-", t.Y, " has no type."));
             }
+
+            dirty = false;
         }
     }
 }
