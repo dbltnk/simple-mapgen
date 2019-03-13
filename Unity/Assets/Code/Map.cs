@@ -21,7 +21,15 @@ public class Map : MonoBehaviour
     bool dirty = false;
     public float ChanceOfFatRooms;
 
-    void Start()
+    void Start() {
+        GenerateMap();
+    }
+
+    private void Update () {
+        if (dirty) PaintAndName();
+    }
+
+    void GenerateMap ()
     {
         tiles = new List<GameObject>();
 
@@ -150,7 +158,7 @@ public class Map : MonoBehaviour
             float r = Random.Range(0f, 1f);
             bool expand = (r <= ChanceOfFatRooms) ? true : false;
             if (expand) {
-                foreach (Tile ti in t.Expand()) {
+                foreach (Tile ti in t.ExpandByOne()) {
                     if (ti.Type == Tile.T.empty && ti.IsOnTheEdge() == false) ti.Type = Tile.T.floor;
                 }
             }
@@ -198,10 +206,6 @@ public class Map : MonoBehaviour
 
     public bool AreTilesEqual (Tile a, Tile b) {
         return (a.X == b.X && a.Y == b.Y) ? true : false;
-    }
-
-    private void Update () {
-        if (dirty) PaintAndName();
     }
 
     private void PaintAndName () {
