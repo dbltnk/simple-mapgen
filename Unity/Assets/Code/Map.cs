@@ -19,6 +19,7 @@ public class Map : MonoBehaviour
     public int AmountStarts;
     public int AmountApples;
     bool dirty = false;
+    public float ChanceOfFatRooms;
 
     void Start()
     {
@@ -83,6 +84,9 @@ public class Map : MonoBehaviour
             }
         }
 
+        List<Tile> tilesToExpand = new List<Tile>();
+        tilesToExpand.AddRange(tilesToConnect);
+
         Tile tileCenter = tilesToConnect[0];
         tilesToConnect.RemoveAt(0);
 
@@ -139,6 +143,17 @@ public class Map : MonoBehaviour
         // mark those fields as floor
         foreach (Tile t in tilesToGround) {
             t.Type = Tile.T.floor;
+        }
+
+        // make some rooms a bit bigger
+        foreach (Tile t in tilesToExpand) {
+            float r = Random.Range(0f, 1f);
+            bool expand = (r <= ChanceOfFatRooms) ? true : false;
+            if (expand) {
+                foreach (Tile ti in t.Expand()) {
+                    if (ti.Type == Tile.T.empty && ti.IsOnTheEdge() == false) ti.Type = Tile.T.floor;
+                }
+            }
         }
 
         // mark everything else as walls

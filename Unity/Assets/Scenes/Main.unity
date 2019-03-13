@@ -154,6 +154,7 @@ MonoBehaviour:
   GridY: 0.6
   AmountStarts: 3
   AmountApples: 5
+  ChanceOfFatRooms: 0.5
 --- !u!4 &59875090
 Transform:
   m_ObjectHideFlags: 0

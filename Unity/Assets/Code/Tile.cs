@@ -153,4 +153,22 @@ public class Tile : MonoBehaviour
 
         return corners;
     }
+
+    public List<Tile> Expand () {
+        List<Tile> tiles = new List<Tile>();
+        tiles.AddRange(GetAllNeighbours());
+        tiles.AddRange(GetAllCorners());
+
+        if (tiles.Count == 0) {
+            Debug.LogWarning(string.Concat("No expansion possible for tile", X, "-", Y));
+        }
+
+        return tiles;
+    }
+
+    public bool IsOnTheEdge() {
+        if (X == 0 || Y == 0 || X == map.Width - 1 || Y == map.Height - 1) {
+            return true;
+        } else { return false; }
+    }
 }
