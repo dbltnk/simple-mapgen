@@ -6,7 +6,8 @@ public class Tile : MonoBehaviour
 {
     public int X;
     public int Y;
-    public string Type;
+    public enum T { empty, start, apple, floor, wall };
+    public T Type;
     Map map;
 
     void Awake()

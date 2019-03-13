@@ -32,7 +32,7 @@ public class Map : MonoBehaviour
                 Tile t = go.GetComponent<Tile>();
                 t.X = x;
                 t.Y = y;
-                t.Type = "empty";
+                t.Type = Tile.T.empty;
                 go.name = string.Concat("tile", "-", t.Type, "-", x, "-", y);
                 go.transform.position = new Vector3(t.X * GridX, t.Y * GridY, 0f);
             }
@@ -50,7 +50,7 @@ public class Map : MonoBehaviour
 
             if (x != 0 && x < Width - 1 && y != 0 && y < Height - 1) {
                 tilesToFill.RemoveAt(r);
-                GetTileByCoordinates(x, y).Type = "start";
+                GetTileByCoordinates(x, y).Type = Tile.T.start;
                 countStart++;
             }
         }
@@ -65,7 +65,7 @@ public class Map : MonoBehaviour
 
             if (x != 0 && x < Width - 1 && y != 0 && y < Height - 1) {
                 tilesToFill.RemoveAt(r);
-                GetTileByCoordinates(x, y).Type = "apple";
+                GetTileByCoordinates(x, y).Type = Tile.T.apple;
                 countApples++;
             }
         }
@@ -76,7 +76,7 @@ public class Map : MonoBehaviour
         List<Tile> tilesToConnect = new List<Tile>();
         for (int i = 0; i < tiles.Count; i++) {
             Tile t = tiles[i].GetComponent<Tile>();
-            if (t.Type == "start" || t.Type == "apple") {
+            if (t.Type == Tile.T.start || t.Type == Tile.T.apple) {
                 //print(string.Concat("Tile-", t.X, "-", t.Y));
                 tilesToConnect.Add(t);
             }
@@ -104,7 +104,7 @@ public class Map : MonoBehaviour
                 for (int i = 0; i <= Mathf.Abs(deltaX); i++) {
                     // do not add start and end tiles
                     Tile tileToGround = GetTileByCoordinates(tileCenter.X + i * direction, tileCenter.Y);
-                    if (!AreTilesEqual(tileToGround, tileCenter) && tileToGround.Type != "start" && tileToGround.Type != "apple") {
+                    if (!AreTilesEqual(tileToGround, tileCenter) && tileToGround.Type != Tile.T.start && tileToGround.Type != Tile.T.apple) {
                         // NTH TODO: ONLY ADD IF IS NOT ALREADY IN THERE
                         tilesToGround.Add(tileToGround);
                         tileLastGrounded = tileToGround;
@@ -126,7 +126,7 @@ public class Map : MonoBehaviour
                         tileToGround = GetTileByCoordinates(tileCenter.X, tileCenter.Y + i * direction);
                     }
 
-                    if (!AreTilesEqual(tileToGround, tileCenter) && tileToGround.Type != "start" && tileToGround.Type != "apple") {
+                    if (!AreTilesEqual(tileToGround, tileCenter) && tileToGround.Type != Tile.T.start && tileToGround.Type != Tile.T.apple) {
                         // NTH TODO: ONLY ADD IF IS NOT ALREADY IN THERE
                         tilesToGround.Add(tileToGround);
                     }
@@ -137,7 +137,7 @@ public class Map : MonoBehaviour
 
         // mark those fields as floor
         foreach (Tile t in tilesToGround) {
-            t.Type = "floor";
+            t.Type = Tile.T.floor;
         }
 
 
@@ -145,24 +145,24 @@ public class Map : MonoBehaviour
         // mark everything else as walls
         foreach (GameObject go in tilesToFill) {
             Tile t = go.GetComponent<Tile>();
-            if (t.Type == "empty") t.Type = "wall";
+            if (t.Type == Tile.T.empty) t.Type = Tile.T.wall;
         }
 
         // TODO: remove all unnecessary walls
         List<Tile> tilesToBeRemoved = new List<Tile>();
         foreach (GameObject go in tilesToFill) {
             Tile t = go.GetComponent<Tile>();
-            if (t.Type == "wall") {
+            if (t.Type == Tile.T.wall) {
                 List<Tile> neighbours = t.GetAllNeighbours();
                 bool hasNonWallNeighbours = false;
                 foreach (Tile n in neighbours) {
-                    if (n.Type != "wall") hasNonWallNeighbours = true;
+                    if (n.Type != Tile.T.wall) hasNonWallNeighbours = true;
                 }
                 if (hasNonWallNeighbours == false) tilesToBeRemoved.Add(t);
             }
         }
         foreach (Tile t in tilesToBeRemoved) {
-            t.Type = "empty";
+            t.Type = Tile.T.empty;
         }
     }
 
@@ -192,16 +192,16 @@ public class Map : MonoBehaviour
             tile.name = string.Concat("tile", "-", t.Type, "-", t.X, "-", t.Y);
 
             SpriteRenderer r = tile.GetComponent<SpriteRenderer>();
-            if (t.Type == "empty") {
+            if (t.Type == Tile.T.empty) {
                 r.sprite = SpriteEmpty;
             }
-            else if (t.Type == "start") {
+            else if (t.Type == Tile.T.start) {
                 r.sprite = SpriteStart;
-            } else if (t.Type == "apple") {
+            } else if (t.Type == Tile.T.apple) {
                 r.sprite = SpriteApple;
-            } else if (t.Type == "wall") {
+            } else if (t.Type == Tile.T.wall) {
                 r.sprite = SpriteWall;
-            } else if (t.Type == "floor") {
+            } else if (t.Type == Tile.T.floor) {
                 r.sprite = SpriteFloor;
             } else {
                 Debug.LogError(string.Concat("Tile-", t.X, "-", t.Y, " has no type."));
