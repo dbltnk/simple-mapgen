@@ -89,9 +89,68 @@ public class Tile : MonoBehaviour
         }
 
         if (neighbours.Count == 0) {
-            Debug.LogWarning(string.Concat("No neighbours exit for tile", X, "-", Y));
+            Debug.LogWarning(string.Concat("No neighbours exist for tile", X, "-", Y));
         }
 
         return neighbours;
+    }
+
+    Tile GetTRCorner () {
+        if (X < map.Width - 1 && Y < map.Height - 1) {
+            return map.GetTileByCoordinates(X + 1, Y + 1);
+        }
+
+        Debug.LogWarning(string.Concat("TR corner for tile-", X, "-", Y, " does not exist."));
+        return null;
+    }
+
+    Tile GetTLCorner () {
+        if (Y < map.Height - 1 && X > 0) {
+            return map.GetTileByCoordinates(X - 1, Y + 1);
+        }
+
+        Debug.LogWarning(string.Concat("TL corner for tile-", X, "-", Y, " does not exist."));
+        return null;
+    }
+
+    Tile GetBRCorner () {
+        if (Y > 0 && X < map.Width - 1) {
+            return map.GetTileByCoordinates(X + 1, Y - 1);
+        }
+
+        Debug.LogWarning(string.Concat("BR corner for tile-", X, "-", Y, " does not exist."));
+        return null;
+    }
+
+    Tile GetBLCorner () {
+        if (Y > 0 && X > 0) {
+            return map.GetTileByCoordinates(X - 1, Y - 1);
+        }
+
+        Debug.LogWarning(string.Concat("BL corner for tile-", X, "-", Y, " does not exist."));
+        return null;
+    }
+
+    public List<Tile> GetAllCorners () {
+        List<Tile> corners = new List<Tile>();
+
+        if (GetTRCorner() != null) {
+            corners.Add(GetTRCorner());
+        }
+        if (GetTLCorner() != null) {
+            corners.Add(GetTLCorner());
+        }
+        if (GetBRCorner() != null) {
+            corners.Add(GetBRCorner());
+        }
+        if (GetBLCorner() != null) {
+            corners.Add(GetBLCorner());
+        }
+
+        if (corners.Count == 0) {
+            Debug.LogWarning(string.Concat("No corners exist for tile", X, "-", Y));
+        }
+
+        return corners;
     }
 }

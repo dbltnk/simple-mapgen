@@ -152,9 +152,11 @@ public class Map : MonoBehaviour
         foreach (GameObject go in tilesToFill) {
             Tile t = go.GetComponent<Tile>();
             if (t.Type == Tile.T.wall) {
-                List<Tile> neighbours = t.GetAllNeighbours();
+                List<Tile> tilesToCheck = new List<Tile>();
+                tilesToCheck.AddRange(t.GetAllNeighbours());
+                tilesToCheck.AddRange(t.GetAllCorners());
                 bool hasNonWallNeighbours = false;
-                foreach (Tile n in neighbours) {
+                foreach (Tile n in tilesToCheck) {
                     if (n.Type != Tile.T.wall) hasNonWallNeighbours = true;
                 }
                 if (hasNonWallNeighbours == false) tilesToBeRemoved.Add(t);
